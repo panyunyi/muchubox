@@ -34,7 +34,7 @@ app.get('/ad', function(req, res) {
   res.json({
     status:200,
     message:"",
-    data:"{"title":"1","imgUrl":"2","startTime":"3","expireTime":"4","howLong":"5"}",
+    data:{"title":"1","imgUrl":"2","startTime":"3","expireTime":"4","howLong":"5"},
     server_time: new Date()
   });
 });
