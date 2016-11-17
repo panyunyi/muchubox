@@ -26,16 +26,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+/*
 app.get('/', function(req, res) {
   res.render('index', { currentTime: new Date() });
-});
-app.get('/time', function(req, res) {
+});*/
+app.get('/ad', function(req, res) {
   res.json({
-    time: new Date()
+    status:200,
+    message:"",
+    data:"{"title":"1","imgUrl":"2","startTime":"3","expireTime":"4","howLong":"5"}",
+    server_time: new Date()
   });
 });
 // 可以将一类的路由单独保存在一个文件中
-app.use('/todos', todos);
+//app.use('/todos', todos);
 
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
