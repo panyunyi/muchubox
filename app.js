@@ -31,12 +31,18 @@ app.get('/', function(req, res) {
   res.render('index', { currentTime: new Date() });
 });*/
 app.get('/ad', function(req, res) {
-  res.json({
-    status:200,
-    message:"",
-    data:{"title":"1","imgUrl":"2","startTime":"3","expireTime":"4","howLong":"5"},
-    server_time: new Date()
-  });
+  var query = new AV.Query('Ad');
+  query.get('582d5a58570c35006cee7d82').then(function (ad) {
+      res.json({
+        status:200,
+        message:"",
+        data:{"title":ad.get('title'),"imgUrl":ad.get('imgUrl'),"startTime":ad.get('startTime'),"expireTime":ad.get('expireTime'),"howLong":ad.get('howLone')},
+        server_time: new Date()
+      });
+    }, function (error) {
+      // 异常处理
+    });
+  
 });
 // 可以将一类的路由单独保存在一个文件中
 //app.use('/todos', todos);
