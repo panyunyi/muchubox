@@ -37,7 +37,7 @@ app.get('/ad', function(req, res) {
         status:200,
         message:"",
         data:{"title":ad.get('title'),"imgUrl":ad.get('imgUrl'),"startTime":ad.get('startTime'),"expireTime":ad.get('expireTime'),
-              "howLong":ad.get('howLong')},
+              "howLong":ad.get('howLong'),"type":ad.get('type')},
         server_time: new Date()
       });
     }, function (error) {
