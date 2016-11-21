@@ -41,13 +41,7 @@ app.get('/ad', function(req, res) {
         server_time: new Date()
       });
     }, function (error) {
-      // 异常处理
-      res.json({
-        status:500,
-        message:error,
-        data:null,
-        server_time: new Date()
-      });
+
     });
 });
 
@@ -62,12 +56,7 @@ app.get('/version/:code',function(req,res){
       server_time: new Date()
     });
   }, function (error) {
-    res.json({
-      status:500,
-      message:error,
-      data:null,
-      server_time: new Date()
-    });
+
   }
 });
 // 可以将一类的路由单独保存在一个文件中
