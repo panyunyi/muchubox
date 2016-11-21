@@ -45,9 +45,10 @@ app.get('/ad', function(req, res) {
     });
 });
 
-app.get('/version/:code',function(req,res){
+app.get('/version/:tag/:code',function(req,res){
   var query=new AV.Query('Version');
-  query.greaterThan('version_code', req.params.code);
+  query.equalTo('tag',req.params.tag);
+  query.lessThan('version_code', req.params.code);
   query.first().then(function (data) {
     if(data==null){
       data="";
