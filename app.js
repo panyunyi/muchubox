@@ -48,7 +48,7 @@ app.get('/ad', function(req, res) {
 app.get('/version/:tag/:code',function(req,res){
   var query=new AV.Query('Version');
   query.equalTo('tag',req.params.tag);
-  query.lessThan('version_code', req.params.code);
+  query.greaterThan('version_code', 900);
   query.first().then(function (data) {
     if(data==null){
       data="";
