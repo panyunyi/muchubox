@@ -49,7 +49,7 @@ app.get('/version/:code',function(req,res){
   var query=new AV.Query('Version');
   query.equalTo('version_code', req.params.code);
   query.first().then(function (data) {
-    if(data===null){
+    if(data==null){
       data="";
     }
     res.json({
