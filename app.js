@@ -42,8 +42,33 @@ app.get('/ad', function(req, res) {
       });
     }, function (error) {
       // 异常处理
+      res.json({
+        status:500,
+        message:error,
+        data:null,
+        server_time: new Date()
+      });
     });
-  
+});
+
+app.get('/version/:code',function(req,res){
+  var query=new AV.Query('Version');
+  query.equalTo('version_code', req.code);
+  query.first().then(function (data) {
+    res.json({
+      status:200,
+      message:"",
+      data:data,
+      server_time: new Date()
+    });
+  }, function (error) {
+    res.json({
+      status:500,
+      message:error,
+      data:null,
+      server_time: new Date()
+    });
+  }
 });
 // 可以将一类的路由单独保存在一个文件中
 //app.use('/todos', todos);
