@@ -49,6 +49,9 @@ app.get('/version/:code',function(req,res){
   var query=new AV.Query('Version');
   query.equalTo('version_code', req.params.code);
   query.first().then(function (data) {
+    if(data===null){
+      data="";
+    }
     res.json({
       status:200,
       message:"",
@@ -56,7 +59,7 @@ app.get('/version/:code',function(req,res){
       server_time: new Date()
     });
   }, function (error) {
-
+    
   });
 });
 // 可以将一类的路由单独保存在一个文件中
