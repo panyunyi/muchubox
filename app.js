@@ -8,7 +8,7 @@ var todos = require('./routes/todos');
 var AV = require('leanengine');
 
 var app = express();
-
+var Box = AV.Object.extend('Box');
 // 设置模板引擎
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -60,8 +60,25 @@ app.get('/version/:tag/:code',function(req,res){
       server_time: new Date()
     });
   }, function (error) {
-    
+
   });
+});
+
+app.post('/box',function(req,res){
+    var box=new Box();
+    box.set('mac',req.body.mac);
+    box.set('ip',req.body.ip);
+    box.save().then(function (box){
+        console.log(box.id);
+        res.json({
+          status:200,
+          message:"",
+          data:box,
+          server_time: new Date()
+        });
+    },function (error){
+        console.error(error.message);
+    });
 });
 // 可以将一类的路由单独保存在一个文件中
 //app.use('/todos', todos);
