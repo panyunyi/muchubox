@@ -32,12 +32,17 @@ app.get('/', function(req, res) {
 });*/
 app.get('/ad', function(req, res) {
   var query = new AV.Query('Ad');
-  query.get('582d5a58570c35006cee7d82').then(function (ad) {
+  query.find().then(function (ads) {
+      var data=[];
+      ads.forEach(function(ad){
+        var json="title":ad.get('title'),"imgUrl":ad.get('imgUrl'),"startTime":ad.get('startTime'),"expireTime":ad.get('expireTime'),
+              "howLong":ad.get('howLong'),"type":ad.get('type'),"seq":ad.get('seq')
+        data.push(json);
+     });
       res.json({
         status:200,
         message:"",
-        data:{"title":ad.get('title'),"imgUrl":ad.get('imgUrl'),"startTime":ad.get('startTime'),"expireTime":ad.get('expireTime'),
-              "howLong":ad.get('howLong'),"type":ad.get('type')},
+        data:data,
         server_time: new Date()
       });
     }, function (error) {
