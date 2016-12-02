@@ -35,8 +35,8 @@ app.get('/ad', function(req, res) {
   query.find().then(function (ads) {
       var data=[];
       ads.forEach(function(ad){
-        var json="title":ad.get('title'),"imgUrl":ad.get('imgUrl'),"startTime":ad.get('startTime'),"expireTime":ad.get('expireTime'),
-              "howLong":ad.get('howLong'),"type":ad.get('type'),"seq":ad.get('seq')
+        var json={"title":ad.get('title'),"imgUrl":ad.get('imgUrl'),"startTime":ad.get('startTime'),"expireTime":ad.get('expireTime'),
+              "howLong":ad.get('howLong'),"type":ad.get('type'),"seq":ad.get('seq')};
         data.push(json);
      });
       res.json({
