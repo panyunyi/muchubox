@@ -5,6 +5,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var todos = require('./routes/todos');
+var market=require('./routes/market');
 var AV = require('leanengine');
 
 var app = express();
@@ -26,10 +27,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-/*
-app.get('/', function(req, res) {
-  res.render('index', { currentTime: new Date() });
-});*/
 app.get('/ad', function(req, res) {
   var query = new AV.Query('Ad');
   query.find().then(function (ads) {
@@ -87,6 +84,7 @@ app.post('/box',function(req,res){
 });
 // 可以将一类的路由单独保存在一个文件中
 //app.use('/todos', todos);
+app.use('/market',market);
 
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
