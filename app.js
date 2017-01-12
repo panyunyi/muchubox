@@ -71,7 +71,6 @@ app.post('/box',function(req,res){
     box.set('mac',req.body.mac);
     box.set('ip',req.body.ip);
     box.save().then(function (box){
-        console.log(box.id);
         res.json({
           status:200,
           message:"",
