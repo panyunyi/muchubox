@@ -13,11 +13,12 @@ var result={
 
 router.get('/ranklist', function(req, res, next) {
     var query=new AV.Query('Apps');
-    query.select(['icon','name','release_date','versionName','image']);
+    query.select(['name','release_date','versionName','iamge']);
     query.ascending('seq');
     query.find().then(function(apps){
         apps.forEach(function(app){
             app.set('appId',app.get('id'));
+            app.set('image',app.get('iamge'));
             app.set('release_date',new moment(app.get('release_date')).format('L'));
         });
         result['data']=apps;
