@@ -66,6 +66,22 @@ app.get('/version/:tag/:code',function(req,res){
   });
 });
 
+app.get('/muchu',function(req,res){
+  let query=new AV.Query('Version');
+  query.equalTo('tag','muchu');
+  query.first().then(function(data){
+    if(data==null){
+      data="";
+    }
+    res.json({
+      status:200,
+      message:"",
+      data:data,
+      server_time: new Date()
+    });
+  });
+});
+
 app.post('/box',function(req,res){
     var box=new Box();
     box.set('mac',req.body.mac);
