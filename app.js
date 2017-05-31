@@ -5,8 +5,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var todos = require('./routes/todos');
-var market=require('./routes/market');
+var market = require('./routes/market');
 var AV = require('leanengine');
+var muchuplayer=require('./routes/muchuplayer');
 
 var app = express();
 var Box = AV.Object.extend('Box');
@@ -27,38 +28,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.get('/ad', function(req, res) {
+app.get('/ad', function (req, res) {
   var query = new AV.Query('Ad');
   query.find().then(function (ads) {
-      var data=[];
-      ads.forEach(function(ad){
-        var json={"id":ad.get('objectId'),"title":ad.get('title'),"imgUrl":ad.get('imgUrl'),"startTime":ad.get('startTime'),"expireTime":ad.get('expireTime'),
-              "howLong":ad.get('howLong'),"type":ad.get('type'),"seq":ad.get('seq')};
-        data.push(json);
-     });
-      res.json({
-        status:200,
-        message:"",
-        data:data,
-        server_time: new Date()
-      });
-    }, function (error) {
-
+    var data = [];
+    ads.forEach(function (ad) {
+      var json = {
+        "id": ad.get('objectId'), "title": ad.get('title'), "imgUrl": ad.get('imgUrl'), "startTime": ad.get('startTime'), "expireTime": ad.get('expireTime'),
+        "howLong": ad.get('howLong'), "type": ad.get('type'), "seq": ad.get('seq')
+      };
+      data.push(json);
     });
-});
-
-app.get('/version/:tag/:code',function(req,res){
-  var query=new AV.Query('Version');
-  query.equalTo('tag',req.params.tag);
-  query.greaterThan('version_code', req.params.code*1);
-  query.first().then(function (data) {
-    if(data==null){
-      data="";
-    }
     res.json({
-      status:200,
-      message:"",
-      data:data,
+      status: 200,
+      message: "",
+      data: data,
       server_time: new Date()
     });
   }, function (error) {
@@ -66,42 +50,46 @@ app.get('/version/:tag/:code',function(req,res){
   });
 });
 
-app.get('/muchu',function(req,res){
-  let query=new AV.Query('Version');
-  query.equalTo('tag','muchu');
-  query.first().then(function(data){
-    if(data==null){
-      data="";
+app.get('/version/:tag/:code', function (req, res) {
+  var query = new AV.Query('Version');
+  query.equalTo('tag', req.params.tag);
+  query.greaterThan('version_code', req.params.code * 1);
+  query.first().then(function (data) {
+    if (data == null) {
+      data = "";
     }
     res.json({
-      status:200,
-      message:"",
-      data:data,
+      status: 200,
+      message: "",
+      data: data,
       server_time: new Date()
     });
+  }, function (error) {
+
   });
 });
 
-app.post('/box',function(req,res){
-    var box=new Box();
-    box.set('mac',req.body.mac);
-    box.set('ip',req.body.ip);
-    box.save().then(function (box){
-        res.json({
-          status:200,
-          message:"",
-          data:box,
-          server_time: new Date()
-        });
-    },function (error){
-        console.error(error.message);
+app.post('/box', function (req, res) {
+  var box = new Box();
+  box.set('mac', req.body.mac);
+  box.set('ip', req.body.ip);
+  box.save().then(function (box) {
+    res.json({
+      status: 200,
+      message: "",
+      data: box,
+      server_time: new Date()
     });
+  }, function (error) {
+    console.error(error.message);
+  });
 });
 // 可以将一类的路由单独保存在一个文件中
 //app.use('/todos', todos);
-app.use('/market',market);
+app.use('/market', market);
+app.use('/muchuplayer', muchuplayer);
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
   if (!res.headersSent) {
     var err = new Error('Not Found');
@@ -111,17 +99,17 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
-app.use(function(err, req, res, next) { // jshint ignore:line
+app.use(function (err, req, res, next) { // jshint ignore:line
   if (req.timedout && req.headers.upgrade === 'websocket') {
     // 忽略 websocket 的超时
     return;
   }
 
   var statusCode = err.status || 500;
-  if(statusCode === 500) {
+  if (statusCode === 500) {
     console.error(err.stack || err);
   }
-  if(req.timedout) {
+  if (req.timedout) {
     console.error('请求超时: url=%s, timeout=%d, 请确认方法执行耗时很长，或没有正确的 response 回调。', req.originalUrl, err.timeout);
   }
   res.status(statusCode);
